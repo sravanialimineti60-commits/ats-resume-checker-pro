@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ATS Checker - Sravani</title>
+<style>
+body{font-family:Arial;background:#f0f2f5;padding:20px}
+.card{background:white;padding:25px;border-radius:15px;max-width:600px;margin:auto;box-shadow:0 5px 20px #0001}
+textarea{width:100%;height:180px;border-radius:10px;padding:12px;border:1px solid #ccc;font-size:14px}
+button{background:#2563eb;color:white;border:none;padding:12px 20px;border-radius:10px;width:100%;font-size:16px;margin-top:15px;cursor:pointer}
+.score{font-size:45px;text-align:center;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>📄 ATS Resume Checker Pro</h2>
+<textarea id="resume" placeholder="Paste your resume here"></textarea>
+<button onclick="check()">🔍 Check ATS Score</button>
+<div id="result" style="margin-top:20px"></div>
+</div>
+<script>
+function check(){
+let text = document.getElementById('resume').value;
+if(text.length < 10){alert('Please paste resume text!'); return;}
+let score = 0; let feedback = [];
+if(text.split(' ').length > 100){score+=15; feedback.push('✅ Good length');} else{feedback.push('❌ Too short');}
+let keys = ['python','sql','java','html','css','github','oops','dbms','project','b.tech','cse'];
+let found = keys.filter(k => text.toLowerCase().includes(k));
+score += found.length * 7; feedback.push('✅ Keywords: ' + found.join(', '));
+if(text.includes('@')){score+=10; feedback.push('✅ Email ok');} else{feedback.push('❌ Email missing');}
+if(/\d{10}/.test(text)){score+=10; feedback.push('✅ Phone ok');} else{feedback.push('❌ Phone missing');}
+score = Math.min(100, score);
+let msg = score>=80 ? '🎉 ATS Clear!' : score>=60 ? '⚠️ Good, can improve' : '🚨 Needs improvement';
+document.getElementById('result').innerHTML = `<div class="score">${score}/100</div><h3>${msg}</h3>${feedback.map(f=>'<p>'+f+'</p>').join('')}`;
+}
+</script>
+</body>
+</html>
